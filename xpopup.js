@@ -156,15 +156,22 @@ var xpopup = function(p) {
 			}
 		};
 		window.addEventListener('click', wf);
+		
+        var modalw = document.createElement('div');
+        modalw.setAttribute("style", "border:0 none;display:block;height:100%;left:0;margin:0;padding:0;position:absolute;top:0;width:100%;z-index:99999;");
+        modalw.setAttribute("id", "xpopup-modal");
+        document.body.appendChild(modalw);
 	}
 	
 	// On close
-	if (d(p.close)) {
+	if (d(p.close) || (p.modal === true)) {
 		var cboc = p.close;
 		var wc = setInterval(function(){
 			if (r.closed()) {
 				clearInterval(wc);
-				cboc();
+				var e = document.getElementById("xpopup-modal");
+				if (d(e))                 document.body.removeChild(e);
+				if (d(cboc)) cboc();
 			}
 		}, 100);
 	}
