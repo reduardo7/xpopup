@@ -25,7 +25,10 @@
                     },
                     width: 400,
                     height: 400,
-                    name: 'testPopup'
+                    name: 'testPopup',
+                    close: function() {
+                        alert('Popup closed!');
+                    }
                 });
             }
 
