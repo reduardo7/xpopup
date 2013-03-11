@@ -1,0 +1,53 @@
+<html>
+    <head>
+        <script type="text/javascript" src="xpopup.js"></script>
+        <script type="text/javascript">
+            var p = null;
+
+            function demo1() {
+                p = xpopup({
+                    url: 'http://www.google.com',
+                    data: {
+                        q: 'Hello world!'
+                    },
+                    width: 400,
+                    height: 400,
+                    modal: true, // Block UI and show PopUp
+                    name: 'testPopup'
+                });
+            }
+
+            function demo2() {
+                p = xpopup({
+                    url: 'http://www.google.com',
+                    data: {
+                        q: 'Hello world!'
+                    },
+                    width: 400,
+                    height: 400,
+                    name: 'testPopup'
+                });
+            }
+
+            function demo3() {
+                if ((p == null) || p.closed()) {
+                    demo2();
+                }
+                p.focus();
+            }
+
+            function demo4() {
+                if ((p == null) || p.closed()) {
+                    demo2();
+                }
+                alert(p.closed() ? 'Popup closed!' : 'Popup not closed!');
+            }
+        </script>
+    </head>
+    <body>
+        <p><a href="javascript:demo1()">Demo 1: Modal</a></p>
+        <p><a href="javascript:demo2()">Demo 2: Simple</a></p>
+        <p><a href="javascript:demo3()">Focus Demo 2</a></p>
+        <p><a href="javascript:demo4()">Demo 2 is closed?</a></p>
+    </body>
+</html>
