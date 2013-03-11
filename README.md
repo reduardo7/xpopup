@@ -14,7 +14,10 @@ Use
         },
         width: 400,
         height: 400,
-        modal: true // Block UI and show PopUp
+        modal: true, // Block UI and show PopUp
+        close: function() {
+            alert('Popup closed!');
+        }
     });
     
     // Center PopUp in screen
