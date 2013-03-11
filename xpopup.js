@@ -18,7 +18,7 @@
  *  top {Integer} OPTIONAL. Window top position. Overwrites "center" option.
  *  center {Boolean} OPTIONAL. Default: true. Center window in screen?
  *  close {Function} OPTIONAL. Callback function on close window event.
- *  modal {Boolean} OPTIONAL. Default: false. Auto set focus?
+ *  modal {Boolean} OPTIONAL. Default: false. Auto set focus and block UI?
  * @return Object.
  *  win: Opened PopUp window object.
  *  center(): Center PopUp on the screen. Returns false on error.
