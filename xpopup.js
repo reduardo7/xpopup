@@ -1,5 +1,10 @@
 /**
  * Open a PopUp Window.
+ * Copyright (c) 2013 XPOPUP | Eduardo Daniel Cuomo | eduardo.cuomo.ar@gmail.com
+ *
+ * By: Edueado Daniel Cuomo.
+ *
+ * Project: https://github.com/reduardo7/xpopup
  *
  * @param p {Object} Options:
  *  url {String} OPTIONAL. URL to load in PopUp.
