@@ -7,42 +7,46 @@
 * Project: https://github.com/reduardo7/xpopup
 *
 * @param p {Object} Options:
-*  url {String} OPTIONAL. URL to load in PopUp.
-*  data {Object} OPTIONAL. URL params. If "url" is not used, this option is not used.
-*  name {Stirng} OPTIONAL. Window name.
-*  fullscreen {Boolean} OPTIONAL. DEFAULT: false. Open PopUp as full screen.
-*  toolbar {Boolean} OPTIONAL. DEFAULT: false. Show toolbar in PopUp?
-*  location {Boolean} OPTIONAL. Default: false. Lock location bar?
-*  status {String} OPTIONAL. Default: "". Text in status bar.
-*  menubar {Boolean} OPTIONAL. Default: false. Show menu bar?
-*  scrollbars {Boolean} OPTIONAL. Default: true. Show scroll bars?
-*  resizable {Boolean} OPTIONAL. Default: true. Allow resize window?
-*  width {Integer} OPTIONAL. Default: 500. Window width.
-*  height {Integer} OPTIONAL. Default: 400. Window height.
-*  left {Integer} OPTIONAL. Window left position. Overwrites "center" option.
-*  top {Integer} OPTIONAL. Window top position. Overwrites "center" option.
-*  center {Boolean} OPTIONAL. Default: true. Center window in screen?
-*  position {string} OPTIONAL. Default: "". Set PopUp position.
+*  url {String} URL to load in PopUp.
+*  data {Object} URL params. If "url" is not used, this option is not used.
+*  name {Stirng} Window name.
+*  fullscreen {Boolean} DEFAULT: false. Open PopUp as full screen.
+*  toolbar {Boolean} DEFAULT: false. Show toolbar in PopUp?
+*  location {Boolean} Default: false. Lock location bar?
+*  status {String} Default: "". Text in status bar.
+*  menubar {Boolean} Default: false. Show menu bar?
+*  scrollbars {Boolean} Default: true. Show scroll bars?
+*  resizable {Boolean} Default: true. Allow resize window?
+*  width {Integer} Default: 500. Window width.
+*  height {Integer} Default: 400. Window height.
+*  left {Integer} Window left position. Overwrites "center" option.
+*  top {Integer} Window top position. Overwrites "center" option.
+*  center {Boolean} Default: true. Center window in screen?
+*  position {string} Default: "". Set PopUp position.
 *      Parent: screen|window (Default: window).
 *      Postitions: top, left, bottom, right, middle (Y), center (X).
-*  close {Function} OPTIONAL. Callback function on close window event.
-*  modal {Boolean} OPTIONAL. Default: false. Auto set focus and block UI?
+*  onClose {Function} Callback function on close window event.
+*  onOpen {Function} Callback function on open.
+*  onError {Function} Callback function on error (Popup's blocked).
+*  closeOnParentUnload {Boolean} Default: false.
+*  modal {Boolean} Default: false. Auto set focus and block UI?
+*  autoOpen {Boolean} Default: true. Auto open Popup?
 * @return Object.
 *  win: Opened PopUp window object.
+*  close(): Close PopUp.
 *  center(): Center PopUp on the screen. Returns false on error.
 *  maximize(): Maximize PopUp. Returns false on error.
 *  focus(): Focus on PopUp window.
 *  closed(): Returns TRUE if PopUp window is closed.
 */
-var xpopup = function (p) {
+function xpopup(p) {
 	var d = function (v) {
-		return (typeof (v) != 'undefined') && (v != null);
+		return (typeof v !== 'undefined') && (v !== null);
 	};
 
 	var o = "",
 		u = p.url,
 		name = p.name,
-		prms = p,
 		w = p.width,
 		h = p.height,
 		l = p.left,
@@ -50,7 +54,7 @@ var xpopup = function (p) {
 		r = {};
 
 	var ap = function (c, x) {
-		if (o != "") o += ",";
+		if (o !== "") o += ",";
 		o += c + "=" + x;
 	};
 
@@ -69,22 +73,24 @@ var xpopup = function (p) {
 	};
 
 	// URL
-	if (d(u) && (u != '') && d(p.data)) {
+	if (u && d(p.data)) {
 		// Add params to URL
-		for (var g in p.data) u += ((u.indexOf('?') < 0) ? '?' : '&') + escape(g) + '=' + escape(p.data[g]);
+		for (var g in p.data) if (p.data.hasOwnProperty(g)) {
+			u += ((u.indexOf('?') < 0) ? '?' : '&') + escape(g) + '=' + escape(p.data[g]);
+		}
 	} else if (!d(u)) {
 		u = '';
 	}
 
 	if (!d(name)) name = 'popup_' + (new Date()).getTime();
 
-	pa("toolbar", prms.toolbar, false);
-	pa("location", prms.location, false);
-	pa("status", prms.status, '');
-	pa("menubar", prms.menubar, false);
-	pa("scrollbars", prms.scrollbars, true);
-	pa("resizable", prms.resizable, true);
-	if (!pa("fullscreen", prms.fullscreen, false)) {
+	pa("toolbar", p.toolbar, false);
+	pa("location", p.location, false);
+	pa("status", p.status, '');
+	pa("menubar", p.menubar, false);
+	pa("scrollbars", p.scrollbars, true);
+	pa("resizable", p.resizable, true);
+	if (!pa("fullscreen", p.fullscreen, false)) {
 		if (!d(w)) w = 500;
 		if (!d(h)) h = 400;
 
@@ -122,40 +128,39 @@ var xpopup = function (p) {
 			}
 		}
 
-		pa("width", prms.width, w);
-		pa("height", prms.height, h);
-		pa("left", prms.left, l);
-		pa("top", prms.top, t);
+		pa("width", p.width, w);
+		pa("height", p.height, h);
+		pa("left", p.left, l);
+		pa("top", p.top, t);
 	}
-
-	// Open
-	r.win = window.open(u, name, o);
 
 	// Extended methods
 	r.center = function () {
-		try {
-			this.win.moveTo; // Check permission
-			var w = this.win,
-				sw = screen.width,
-				sh = screen.height,
-				ww = w.outerWidth,
-				wh = w.outerHeight,
-				x = parseInt((sw / 2) - (ww / 2)),
-				y = parseInt((sh / 2) - (wh / 2));
-			if (x < 0) x = 0;
-			if (y < 0) y = 0;
-			if (x >= sw - 10) x = sw - ww;
-			if (y >= sh - 10) y = sh - wh;
-			w.moveTo(x, y);
-			return true;
-		} catch (e) {
-			return false;
+		if (r.win) {
+			try {
+				r.win.moveTo; // Check permission
+				var w = r.win,
+					sw = screen.width,
+					sh = screen.height,
+					ww = w.outerWidth,
+					wh = w.outerHeight,
+					x = parseInt((sw / 2) - (ww / 2)),
+					y = parseInt((sh / 2) - (wh / 2));
+				if (x < 0) x = 0;
+				if (y < 0) y = 0;
+				if (x >= sw - 10) x = sw - ww;
+				if (y >= sh - 10) y = sh - wh;
+				w.moveTo(x, y);
+				return true;
+			} catch (e) { }
 		}
+
+		return false;
 	};
 
 	r.maximize = function () {
 		try {
-			var w = this.win;
+			var w = r.win;
 			w.moveTo(0, 0);
 			if (document.all) {
 				w.resizeTo(screen.availWidth, screen.availHeight);
@@ -172,15 +177,38 @@ var xpopup = function (p) {
 	};
 
 	r.focus = function () {
-		this.win.focus();
+		if (r.win) r.win.focus();
+		return r;
 	};
 
 	r.closed = function () {
-		return this.win.closed;
+		return r.win ? r.win.closed : null;
+	};
+
+	r.close = function () {
+		if (r.win) r.win.close();
+		return r;
+	};
+
+	r.open = function () {
+		// Open
+		r.win = window.open(u, name, o);
+
+		// On Open
+		if (r.win && (typeof p.onOpen === 'function')) {
+			p.onOpen.apply(r);
+		}
+
+		// On Error
+		if (!r.win && (typeof p.onError === 'function')) {
+			p.onError.apply(r);
+		}
+
+		return r;
 	};
 
 	// Modal
-	if (p.modal === true) {
+	if (p.modal) {
 		var wf = function (e) {
 			if (r.closed()) {
 				window.removeEventListener('click', wf);
@@ -199,17 +227,27 @@ var xpopup = function (p) {
 		document.body.appendChild(modalw);
 	}
 
-	// On close
-	if (d(p.close) || (p.modal === true)) {
-		var cboc = p.close;
+	// On Popup Close
+	var xoc = typeof p.onClose === 'function';
+	if (xoc || p.modal) {
 		var wc = setInterval(function () {
 			if (r.closed()) {
 				clearInterval(wc);
 				var e = document.getElementById("xpopup-modal");
 				if (d(e)) document.body.removeChild(e);
-				if (d(cboc)) cboc();
+				if (xoc) p.onClose.apply(r);
 			}
-		}, 100);
+		}, 50);
+	}
+
+	// On Parent Unload
+	if (p.closeOnParentUnload) {
+		window.addEventListener('unload', r.close, false);
+	}
+
+	// Open
+	if (p.autoOpen !== false) {
+		r.open();
 	}
 
 	// Return
