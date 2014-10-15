@@ -1,10 +1,16 @@
-xpopup
+xPopUp
 ======
 
 JavaScript PopUp full control.
 
-Use
-===
+- No extra library required.
+- Easy to use.
+- Events.
+- Callbacks.
+- Full control.
+
+Example
+=======
 
     // Open URL in PopUp: page.php?id=123
     var p = xpopup({
