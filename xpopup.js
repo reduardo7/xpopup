@@ -212,17 +212,22 @@ function xpopup(p) {
 		var wf = function (e) {
 			if (r.closed()) {
 				window.removeEventListener('click', wf);
+				document.removeEventListener('focus', wf);
+				document.removeEventListener('keydown', wf);
 			} else {
 				if (e.preventDefault) e.preventDefault();
 				if (e.stopPropagation) e.stopPropagation();
 				r.center();
 				r.focus();
+				return false;
 			}
 		};
 		window.addEventListener('click', wf);
+		document.addEventListener('focus', wf);
+		document.addEventListener('keydown', wf);
 
 		var modalw = document.createElement('div');
-		modalw.setAttribute("style", "border:0 none;display:block;height:100%;left:0;margin:0;padding:0;position:absolute;top:0;width:100%;z-index:99999;");
+		modalw.setAttribute("style", "border:0 none;display:block;height:100%;left:0;margin:0;padding:0;position:absolute;top:0;width:100%;z-index:99999;background-color:rgba(0,0,0,0.5);");
 		modalw.setAttribute("id", "xpopup-modal");
 		document.body.appendChild(modalw);
 	}
