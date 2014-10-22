@@ -21,7 +21,7 @@ Example
         width: 400,
         height: 400,
         modal: true, // Block UI and show PopUp
-        close: function() {
+        onClose: function() {
             alert('Popup closed!');
         }
     });
