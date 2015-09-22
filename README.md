@@ -1,7 +1,7 @@
 xPopUp
 ======
 
-JavaScript PopUp full control.
+Full control over `JavaScript` `PopUp's`.
 
 - No extra library required.
 - Easy to use.
