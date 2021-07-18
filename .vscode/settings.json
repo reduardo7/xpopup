@@ -1,0 +1,6 @@
+{
+  "cSpell.words": ["Cuomo", "NOSONAR", "XPOPUP"],
+  "javascript.preferences.quoteStyle": "single",
+  "typescript.preferences.quoteStyle": "single",
+  "prettier.singleQuote": true
+}

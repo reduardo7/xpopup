@@ -1,0 +1,25 @@
+{
+  "name": "xpopup",
+  "version": "1.0.0",
+  "description": "xPopup",
+  "main": "xpopup.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reduardo7/xpopup.git"
+  },
+  "keywords": [
+    "popup",
+    "xpopup",
+    "window",
+    "extend"
+  ],
+  "author": "Eduardo Cuomo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/reduardo7/xpopup/issues"
+  },
+  "homepage": "https://github.com/reduardo7/xpopup#readme"
+}
