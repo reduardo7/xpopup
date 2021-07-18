@@ -61,6 +61,9 @@ export interface IXPopupParams {
   /**
    * Allow resize window?
    *
+   * Note: This is old school javascript. Modern browsers tend to not allow this because
+   * it is seen as a user unfriendly limitation.
+   *
    * @default true
    */
   resizable?: boolean;
